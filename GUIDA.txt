@@ -1,0 +1,218 @@
+SUPREME DRUMS
+Copyright (c) 2026 Giulia Casu. Tutti i diritti riservati.
+Ideato e realizzato da Giulia Casu il 12 novembre 2026.
+
+PLUGIN GIA' PRONTO (WINDOWS, VST3 64 BIT)
+-----------------------------------------
+Il file SupremeDrums-VST3-Windows.zip contiene il plugin gia' compilato:
+copia la cartella "Supreme Drums.vst3" in C:\Program Files\Common Files\VST3\
+e fai "Ripeti scansione" in Ableton. Le istruzioni sono nel suo INSTALLA.txt.
+Compilare da solo (qui sotto) serve solo se vuoi modificare il codice.
+
+COMPILARE IL PLUGIN SUL TUO COMPUTER (SENZA GITHUB)
+---------------------------------------------------
+WINDOWS (VST3, 64 bit)
+1. Installa gratis "Visual Studio 2022 Community" (visualstudio.microsoft.com/it)
+   spuntando "Sviluppo di applicazioni desktop con C++" (include CMake).
+2. Estrai questo zip, poi doppio clic su COMPILA-WINDOWS.bat.
+   La prima volta scarica JUCE (circa 100 MB) e compila (qualche minuto).
+   Non serve NuGet: le intestazioni WebView2 sono incluse in third_party/.
+3. Alla fine conferma il permesso di amministratore: il plugin viene copiato in
+   C:\Program Files\Common Files\VST3\Supreme Drums.vst3
+4. In Ableton: Preferenze > Plug-in > "Usa cartelle di sistema VST3" > Ripeti scansione.
+Se qualcosa va storto, la finestra mostra gli errori: mandameli.
+
+MAC (VST3 e AU, 64 bit, Apple Silicon + Intel)
+Su Mac il plugin va compilato su un Mac (non e' possibile produrlo da Windows o Linux).
+1) Installa Xcode (App Store) e CMake (brew install cmake, oppure cmake.org).
+2) Doppio clic su COMPILA-MAC.command: compila VST3 e AU universali, li firma,
+   li installa in ~/Library/Audio/Plug-Ins e verifica l'AU con auval.
+   I plugin finiti sono anche nella cartella "dist".
+Senza un Mac: carica questa cartella in un repository privato di GitHub e avvia
+il flusso "Build" (file .github/workflows/build.yml): scarichi lo zip gia' compilato.
+Per distribuirlo ad altre persone serve la firma Apple Developer ID e la notarizzazione.
+
+AUTOMAZIONE
+- 84 parametri: volume, pan, tono, lunghezza e filtro di 16 pad; volume, filtro DJ,
+  saturazione e swing del master. Il nome segue lo strumento ("01 Kick - Volume").
+- Manuale in 9 lingue: Supreme-Drums-Manual.html
+
+SUONI REGISTRATI INCLUSI (tutti in pubblico dominio, CC0 1.0)
+- Big Rusty Drums (Karoryfer Samples): batteria rock e metal, piu' microfoni mixati
+  (cassa, rullante, rimshot, hi-hat, tom, crash, china, ride e campana del ride).
+- Unruly Drums (Karoryfer Samples): batteria punk/garage sporca e diretta.
+- Virtuosity Drums (Versilian Studios): batteria piu' leggera per jazz, funk,
+  reggae, folk e varianti vintage.
+- Versilian Community Sample Library: percussioni del mondo e orchestrali
+  (caixa, tamborim, darbuka, cornici, sonagli, piatti a mano, campanacci...).
+- World Percussion (FreePats): nacchere.
+- I suoni sintetici restano disponibili con il suffisso "(sintetico)".
+- TR-808 (Michael Fischer) e TR-909/707 (registrazioni TR-8 di MckAudio, CC0) per i generi
+  elettronici e urban. Varianti di colpo (alternata e piano) per batterie e percussioni.
+- Restano sintetici, perche' non esistono registrazioni libere: tabla (bayan,
+  na, tin) e dholak. Puoi sostituirli trascinando i tuoi campioni sullo strumento.
+
+REQUISITI TECNICI (verifica)
+- Formati VST3 e AU, 64 bit: VST3 su Windows e Mac, AU su Mac (64 bit).
+- Framework JUCE (C++) per interfaccia e audio: si'.
+- Interfaccia ridimensionabile con proporzioni fisse: si', 2:1, da 900x450 a 2400x1200.
+- Salvataggio/caricamento preset con categorie e browser: libreria con categorie
+  (Kit, Kick, Snare...), ricerca, file .sdsound/.sdkit; Ableton salva lo stato nel set.
+- Elaborazione a bassa latenza e sicura in tempo reale: latenza aggiunta zero;
+  nel thread audio nessuna allocazione o attesa; le note di Ableton non vanno perse
+  anche mentre l'interfaccia aggiorna i suoni; la memoria dei suoni sostituiti
+  viene liberata fuori dal thread audio.
+
+CAMPIONI DAI SITI (SampleFocus, Lucid Samples, Pixabay, BandLab, Looperman, WAVS, 99Sounds)
+Puoi scaricarli e usarli nella tua musica caricandoli nel plugin ("Carica campioni"
+o trascinandoli). Le loro licenze NON permettono di ridistribuirli dentro un plugin o
+una libreria di suoni: per questo non vanno inclusi nel plugin che distribuisci.
+
+SUPREME DRUMS - plugin VST3 per Windows
+=======================================
+
+Questa cartella contiene il progetto del plugin. Per trasformarlo nel file
+"Supreme Drums.vst3" da usare in Ableton serve una compilazione: la fa GitHub
+gratis al posto tuo, sui suoi computer Windows. Non devi installare nulla.
+
+
+PARTE 1 - FAR COMPILARE IL PLUGIN (una volta sola, circa 20 minuti)
+-------------------------------------------------------------------
+1. Vai su https://github.com e crea un account gratuito (se non ce l'hai).
+2. In alto a destra premi "+" e poi "New repository".
+   - Nome: SupremeDrums
+   - Lascia "Public" oppure scegli "Private": vanno bene entrambi.
+   - Premi "Create repository".
+3. Nella pagina che si apre clicca il link "uploading an existing file".
+4. Apri la cartella SupremeDrums sul tuo computer, seleziona TUTTO il suo
+   contenuto (anche la cartella ".github") e trascinalo nella pagina di GitHub.
+   Poi premi "Commit changes" in basso.
+5. Controlla che tra i file caricati ci sia la cartella ".github".
+   Se manca: premi "Add file" > "Create new file", scrivi come nome
+   .github/workflows/build.yml
+   incolla il contenuto del file build.yml che trovi in questa cartella
+   (dentro .github/workflows) e premi "Commit changes".
+6. Apri la scheda "Actions" in alto. Se GitHub lo chiede, premi il pulsante
+   verde per abilitare le Actions. Vedrai "Compila Supreme Drums per Windows"
+   in esecuzione (pallino giallo). Attendi che diventi verde: 15-25 minuti.
+7. Clicca sull'esecuzione completata e, in fondo alla pagina, nella sezione
+   "Artifacts", scarica "Supreme-Drums-Windows". Estrai lo zip.
+
+Se il pallino diventa ROSSO: clicca sull'esecuzione, poi sul passaggio con la X,
+copia il testo dell'errore e incollalo nella chat con Claude: lo correggiamo.
+
+
+PARTE 2 - INSTALLARE IL PLUGIN
+------------------------------
+1. Nello zip estratto trovi la cartella "Supreme Drums.vst3".
+2. Copiala (intera) in:  C:\Program Files\Common Files\VST3
+   Windows chiedera' il permesso di amministratore: conferma.
+3. Apri Ableton Live > Options > Preferences > scheda "Plug-ins".
+   - Attiva "Use VST3 Plug-in System Folders".
+   - Premi "Rescan".
+4. Nel Browser di Ableton, sezione "Plug-ins", trovi
+   Supreme Audio > Supreme Drums.
+
+Nello zip c'e' anche "Supreme Drums (prova senza Ableton).exe": e' la stessa
+cosa in versione autonoma, utile per provarla. Windows potrebbe mostrare
+"PC protetto da Windows": premi "Ulteriori informazioni" > "Esegui comunque"
+(succede con tutti i programmi non firmati con un certificato a pagamento).
+
+
+PARTE 3 - USARLO IN ABLETON
+---------------------------
+1. Trascina Supreme Drums su una traccia MIDI: si apre la sua finestra.
+2. Scegli "Kit di batteria completo", un genere e uno dei 3 kit pronti
+   (oppure costruiscilo da zero). Le fasi sono nel menu a sinistra:
+   Kit, Suoni, Forma, Layer, Effetti, Ritmi, Esporta; in basso a destra
+   ci sono "Indietro" e "Avanti". In alto restano sempre gli strumenti
+   del kit e i pulsanti per ascoltare.
+3. Per suonare il ritmo hai due modi, anche insieme:
+   a) CLIP MIDI: nella schermata "Ritmi" tieni premuta una qualsiasi
+      scheda ritmo e trascinala dentro la traccia di Ableton: nasce una
+      clip con le note. In "Modifica a mano" puoi trascinare anche il
+      ritmo della griglia (riquadro "Trascina nella traccia").
+   b) PLAY DEL PROGRAMMA: nel pannello Groove accendi
+      "Suona con il Play del programma": quando premi Play in Ableton,
+      Supreme Drums suona il ritmo a tempo con il progetto.
+4. Note dei pad: il primo strumento del kit e' su C1, il secondo su C#1,
+   il terzo su D1 e cosi' via (come in un Drum Rack). Lo vedi scritto
+   nelle schede del kit e nella griglia del ritmo.
+5. Tutto viene salvato dentro il progetto di Ableton: riaprendo il set,
+   Supreme Drums suona subito, anche senza aprire la sua finestra.
+
+
+CAMPIONI REALI
+--------------
+I suoni pronti di Supreme Drums sono sintetizzati. Per un suono vero:
+- Schermata "Suoni" > "Usa un tuo campione": carica un file audio
+  (WAV, MP3, AIFF, FLAC, OGG) nello strumento selezionato, oppure
+  trascinalo sulla scheda dello strumento.
+- Schermata "Kit" > "Carica campioni": scegli tanti file insieme; vengono
+  assegnati da soli in base al nome (kick, snare, hat, open hat, clap,
+  rim, tom, crash, ride...).
+I campioni restano salvati nel progetto e si modellano con inviluppo,
+accordatura, filtri ed effetti come gli altri suoni.
+
+Campioni veri consigliati per genere (controlla sempre la licenza;
+nel plugin li trovi anche in Suoni > "I tuoi campioni", con il pulsante "Apri"):
+
+ROCK, PUNK, INDIE, POP ROCK (batteria acustica)
+- SM MegaReaper Drumkit: Ludwig anni '60, 127 livelli di velocity, uso libero.
+- Big Rusty Drums (CC0), Naked Drums e Muldjord Kit (CC-BY 4.0):
+  sfzinstruments.github.io/drums
+- Signals Audio "SCC Drums": batterie acustiche in pubblico dominio.
+METAL
+- Kit DrumGizmo (CrocellKit, kit di una band metal), SM MegaReaper.
+JAZZ, FUNK, DISCO
+- Versilian "Virtuosity Drums" (jazz con bacchette), Naked Drums, SCC Drums.
+HOUSE, TECHNO, TRANCE, EDM (909)
+- "121 Royalty Free 909 Related Drum Samples" (Low Entropy, su Bandcamp).
+- BPB Cassette 909 / 808 / 606.
+HIP-HOP, TRAP, LO-FI (808)
+- BPB Cassette 808, MusicRadar SampleRadar.
+SYNTHWAVE, SYNTH-POP
+- MusicRadar "503 obscure drum machine samples", BPB Cassette 606.
+WORLD
+- Versilian VCSL (CC0), MusicRadar world percussion, Freesound (filtro CC0).
+ORCHESTRA E SACRO
+- VSCO 2 Community Edition (pubblico dominio): timpani, rullante, piatti.
+
+Come usarli: Kit > "Kit dai tuoi campioni" (anche trascinando i file),
+oppure trascina un campione, anche direttamente da Ableton, sulla
+scheda di uno strumento o sulla barra in alto.
+
+
+AUTOMAZIONE IN ABLETON
+----------------------
+Nel dispositivo Supreme Drums clicca il triangolino in alto a sinistra
+(oppure "Configura") e scegli i parametri da automatizzare:
+- Volume, Filtro DJ, Saturazione master, Swing extra (tutto il kit);
+- per ogni pad (Pad C1, Pad C#1, ...): volume, pan, tono, lunghezza.
+Disegna le curve nella clip o nell'arrangiamento: i cursori del Mixer
+del plugin si muovono insieme all'automazione.
+Le regolazioni del suono (Forma, Layer, Effetti) non sono automatizzabili:
+il suono viene calcolato dall'interfaccia, non in tempo reale.
+
+NOVITÀ DI QUESTA VERSIONE
+-------------------------
+- Indicatore rosso in alto quando qualche linea è in solo o spenta.
+- Combina linee: casella "attiva" per scegliere le linee che suonano.
+- Layer: riquadro "Tonalità del layer" in cima alla schermata.
+- Forma: si vedono solo i parametri utili per la sorgente del layer.
+- Mixer: tono e lunghezza per pad, filtro DJ, saturazione, swing extra.
+- Mixer: volume e pan per ogni pad e volume master, anche per le note
+  suonate da Ableton.
+- Ritmi: terzine e roll nella griglia; riquadro "Ritmo corrente" da
+  trascinare in Ableton.
+- Effetti: ordine della catena scelto da te (numerino su ogni effetto).
+- Kit: "Cambia kit" / "Cambia strumento" in qualsiasi momento.
+
+
+REQUISITI
+---------
+- Windows 10 o 11 a 64 bit.
+- Microsoft Edge WebView2 Runtime (gia' presente in Windows 10/11 aggiornati;
+  se la finestra del plugin resta vuota, scaricalo gratis da
+  https://developer.microsoft.com/microsoft-edge/webview2/ ).
+- Ableton Live 10 o successivo (o qualsiasi programma che apre plugin VST3).

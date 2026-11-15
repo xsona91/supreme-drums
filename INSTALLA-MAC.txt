@@ -1,0 +1,30 @@
+SUPREME DRUMS per Mac - installazione
+© 2026 Giulia Casu. Tutti i diritti riservati.
+
+Funziona su Mac con Apple Silicon (M1, M2, M3, M4…) e con processore Intel, macOS 10.15 o successivo.
+Contiene due formati:
+  - Supreme Drums.vst3       (Ableton Live, Reaper, Cubase, Studio One, Bitwig…)
+  - Supreme Drums.component  (Audio Unit: Logic Pro, GarageBand, e anche Ableton Live)
+
+1. COPIA I FILE
+   Nel Finder premi Cmd+Maiusc+G e incolla:  ~/Library/Audio/Plug-Ins/
+   - trascina "Supreme Drums.vst3"      nella cartella VST3
+   - trascina "Supreme Drums.component" nella cartella Components
+   (se una cartella non esiste, creala con quel nome esatto)
+
+2. SBLOCCA I FILE (solo la prima volta)
+   Il plugin non ha una firma Apple a pagamento, quindi macOS lo blocca finché non lo autorizzi.
+   Apri l'app Terminale e incolla questa riga, poi premi Invio:
+
+   xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/VST3/"Supreme Drums.vst3" ~/Library/Audio/Plug-Ins/Components/"Supreme Drums.component"
+
+   In alternativa: apri la DAW; se compare l'avviso "non può essere aperto", vai in
+   Impostazioni di Sistema > Privacy e sicurezza e premi "Apri comunque".
+
+3. APRI LA DAW
+   - Ableton Live: Impostazioni > Plug-in > attiva "Usa cartella di sistema VST3" e/o
+     "Usa Audio Unit v2", poi premi "Ripeti scansione". Lo trovi in Plug-in > Giulia Casu.
+   - Logic Pro / GarageBand: lo trovi tra gli strumenti Audio Unit > Giulia Casu > Supreme Drums.
+     Se non compare, riavvia il Mac (oppure apri Logic: rifà la verifica dei plugin).
+
+Il manuale completo è nel file Supreme-Drums-Manual.html.

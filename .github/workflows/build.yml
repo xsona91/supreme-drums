@@ -1,0 +1,49 @@
+# Compila Supreme Drums per Mac (VST3 + AU, universale Apple Silicon + Intel) sui server di GitHub.
+# Parte da sola a ogni modifica; la versione Windows si avvia a mano da "Actions" > "Build" > "Run workflow".
+name: Build
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  mac:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build -G Xcode -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.15
+      - run: cmake --build build --config Release --target SupremeDrums_VST3 SupremeDrums_AU -- -quiet
+      - name: Firma ad hoc e controlli
+        run: |
+          V="build/SupremeDrums_artefacts/Release/VST3/Supreme Drums.vst3"
+          A="build/SupremeDrums_artefacts/Release/AU/Supreme Drums.component"
+          codesign --force --deep -s - "$V"
+          codesign --force --deep -s - "$A"
+          lipo -info "$V/Contents/MacOS/Supreme Drums"
+          lipo -info "$A/Contents/MacOS/Supreme Drums"
+          codesign --verify --deep --strict "$V" && codesign --verify --deep --strict "$A"
+      - name: Validazione Audio Unit (auval)
+        run: |
+          mkdir -p ~/Library/Audio/Plug-Ins/Components
+          cp -R "build/SupremeDrums_artefacts/Release/AU/Supreme Drums.component" ~/Library/Audio/Plug-Ins/Components/
+          killall -9 AudioComponentRegistrar 2>/dev/null || true
+          sleep 3
+          auval -a | grep -i supreme || true
+          auval -v aumu Spdr Supa | tee auval.log
+          grep -q "AU VALIDATION SUCCEEDED" auval.log
+      - name: Pacchetto
+        run: |
+          mkdir -p "dist/SupremeDrums-Mac"
+          cp -R build/SupremeDrums_artefacts/Release/VST3/*.vst3 build/SupremeDrums_artefacts/Release/AU/*.component "dist/SupremeDrums-Mac/"
+          cp INSTALLA-MAC.txt Supreme-Drums-Manual.html "dist/SupremeDrums-Mac/"
+          cd dist && ditto -c -k --sequesterRsrc --keepParent SupremeDrums-Mac ../SupremeDrums-Mac.zip
+      - uses: actions/upload-artifact@v4
+        with: { name: SupremeDrums-Mac, path: SupremeDrums-Mac.zip }
+  windows:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+      - run: cmake --build build --config Release --target SupremeDrums_VST3
+      - uses: actions/upload-artifact@v4
+        with: { name: SupremeDrums-Windows, path: "build/SupremeDrums_artefacts/Release/VST3" }

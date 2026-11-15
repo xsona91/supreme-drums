@@ -1,0 +1,20 @@
+Compilazione incrociata da Linux (usata per produrre il VST3 Windows incluso)
+=============================================================================
+Strumenti: clang/lld 18, mingw-w64 (g++-mingw-w64-x86-64-posix), CMake, Ninja, JUCE 8.0.4.
+JUCE 8 non supporta piu' ufficialmente MinGW: questa cartella contiene i file di compatibilita'.
+
+- overlay/sd_mingw_compat.h      intestazioni C e macro attese, __uuidof per interfacce COM
+- overlay/wrl/...                 versione minima di WRL (Make, Callback) usata da JUCE per WebView2
+- overlay/WebView2EnvironmentOptions.h  opzioni WebView2 senza WRL
+- ../Source/mingw/sd_mingw_shims.c      CLSID_SpVoice e _get_tzname
+Servono anche le intestazioni API recenti di mingw-w64 (Direct2D 1.3):
+  git clone https://github.com/mingw-w64/mingw-w64  ->  SD_MINGW_HEADERS=.../mingw-w64-headers/include
+e una copia di overlay/WebView2.h (dall'SDK WebView2) con MIDL_INTERFACE ridefinita con __declspec(uuid).
+Alias di maiuscole: Dbghelp.h, EventToken.h e libD2d1.a, libD3D11.a, libDComp.a, libDXGI.a,
+libDbgHelp.a, libDwrite.a (+ una libcomsuppw.a vuota) in cross/libalias.
+
+  cmake -S . -B out -G Ninja -DCMAKE_TOOLCHAIN_FILE=cross/mingw-clang.cmake -DSD_MINGW_HEADERS=... \
+        -DCMAKE_BUILD_TYPE=Release -DFETCHCONTENT_SOURCE_DIR_JUCE=/percorso/JUCE-8.0.4
+  ninja -C out SupremeDrums_VST3
+
+Su Windows con Visual Studio basta COMPILA-WINDOWS.bat (queste parti non vengono usate).
