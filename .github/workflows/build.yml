@@ -5,6 +5,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   mac:
     runs-on: macos-latest
@@ -38,6 +40,12 @@ jobs:
           cd dist && ditto -c -k --sequesterRsrc --keepParent SupremeDrums-Mac ../SupremeDrums-Mac.zip
       - uses: actions/upload-artifact@v4
         with: { name: SupremeDrums-Mac, path: SupremeDrums-Mac.zip }
+      - name: Pubblica lo zip nel ramo mac-build
+        run: |
+          mkdir out && cp SupremeDrums-Mac.zip out/ && cd out
+          git init -q -b mac-build && git add SupremeDrums-Mac.zip
+          git -c user.name="GitHub Actions" -c user.email="actions@github.com" commit -qm "Plugin Mac compilato da ${GITHUB_SHA}"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" mac-build
   windows:
     if: github.event_name == 'workflow_dispatch'
     runs-on: windows-latest
